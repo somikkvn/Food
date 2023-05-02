@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div style="margin-top: 20px" class="container">
+    <div class="row">
+        <div class="col-md-6">
+
+            <img src="{{object.image.url}}" class="card-img-top" alt="...">
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Продукт : {{object.name}}</b></li>
+                    <li class="list-group-item"><b> Опис </b> {{object.description}}</li>
+
+                    <li class="list-group-item">
+                        <form method="post" action="{% url 'Product_order_create' object.slug %}" id="myForm">
+                            {% csrf_token %}
+                            {% if item %}
+                            <b>Ціна</b> <input id="price" name="price" value="{{object.price}}" >
+                            <br><h3>Індивідуальний підбір інгредієнтів:</h3>
+                            {% endif %}
+                            <div>
+                              {% for ingredient in item %}
+                              <input  type="checkbox" id="{{ ingredient.id }}" name="{{ ingredient.price }}" onchange="handleCheckboxChange(event)">
+                              <label for="{{ ingredient.id }}">{{ ingredient.name }}</label>
+                              <label for="{{ ingredient.id }}">{{ ingredient.price }}</label>
+                              {% endfor %}
+                            </div>
+
+                            <button type="submit" class="btn btn-success" onclick="submitForm()">Замовити</button>
+                        </form>
+                        <script>
+                            function submitForm() {
+                            var form = document.getElementById('myForm');
+                            console.log(form);
+                            }
+
+                            function addPrice() {
+                            price2 = document.getElementById("price").value
+
+                            console.log(price2);
+
+                            }
+
+                            function handleCheckboxChange(event) {
+                                    const checkbox = event.target;
+                                    input = document.getElementById("price")
+                                    price = input.value
+
+                                    if (checkbox.checked) {
+                                        price = +price + +checkbox.name
+                                    } else {
+                                        price = +price - +checkbox.name
+                                    }
+                                    input.value = price
+                                    console.log(input.value)
+                                    console.log(`Checkbox with id ${checkbox.name} is now ${checkbox.checked ? 'selected' : 'unselected'}`);
+                            }
+                        </script>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+

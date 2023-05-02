@@ -1,0 +1,125 @@
+{% load static %}  <!-- Loads the static files such as CSS and JavaScript -->
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> <!-- Links to the Bootstrap CSS file -->
+    <title>Замовити українську страву</title> <!-- Title of the webpage -->
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger">
+    <!-- Navbar content -->
+    <a class="navbar-brand" href="/">Заказ блюд української кухні за індивідуальним підбором інгредієнтів</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link {% block nav_home %}{% endblock nav_home %}" href="/">Головна <span class="sr-only">(current)</span></a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link {% block nav_order %}{% endblock nav_order %}" href="{% url 'Product_order_list' %}">Мої замовлення</a>
+             <!-- This is a link to the user's order page if they are authenticated -->
+            </li>
+            {% endif %}
+
+            </ul>
+    <ul class="nav justify-content-end">
+        <!-- This is an unordered list that contains the login, registration, and user information links on the right side of the navbar -->
+        {% if user.is_authenticated %}
+        <!-- This is an if statement to check if the user is authenticated -->
+        <li class="nav-item">
+            <a class="nav-link disabled" href="#">{{user.username}}</a>
+            <!-- This is a link that displays the user's username if they are authenticated -->
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="{% url 'logout' %}">Вихід</a>
+            <!-- This is a link to logout the user if they are authenticated -->
+        </li>
+        {% else %}
+        <li class="nav-item">
+            <a style="color:white" class="nav-link" href="{% url 'login' %}">Вхід</a>
+            <!-- This is a link to the login page if the user is not authenticated -->
+        </li>
+
+        <li class="nav-item">
+            <a style="color:white" class="nav-link" href="{% url 'signup' %}">Реєстрація</a>
+            <!-- This is a link to the registration page if the user is not authenticated -->
+        </li>
+        {% endif %}
+
+    </ul>
+</div>
+
+</nav>
+<br>
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img style="height:300px" class="d-block w-100" src="{% static 'img/1.jpg' %}" alt="First slide">
+    </div>
+    <div class="carousel-item">
+      <img style="height:300px" class="d-block w-100" src="{% static 'img/2.jpg' %}" alt="Second slide">
+    </div>
+    <div class="carousel-item">
+      <img style="height:300px" class="d-block w-100" src="{% static 'img/3.jpg' %}" alt="Third slide">
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Попередній</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Наступний</span>
+  </a>
+</div>
+<div style="  margin: 20px 20px 0 auto ;display: block;" class="container">
+    <button type="submit" onclick="filter_set(1)" class="btn btn-success btn-lg">Перші блюда</button>
+    <button type="submit" onclick="filter_set(2)" class="btn btn-danger btn-lg">Другі блюда</button>
+    <button type="submit" onclick="filter_set(3)" class="btn btn-success btn-lg" >Усі страви</button>
+    <button type="submit" onclick="filter_set(4)" class="btn btn-danger btn-lg">Напої</button>
+    <button type="submit" onclick="filter_set(5)" class="btn btn-success btn-lg">Десерти</button>
+</div>
+
+<div class="container-fluid">
+    {% block content %}{% endblock content %}
+</div>
+
+<!-- Optional JavaScript -->
+<!-- This code imports the required JavaScript files for using Bootstrap framework -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+ <!-- This imports the jQuery library, which is a dependency for using Bootstrap. The 'integrity' attribute provides extra security by ensuring the file is not tampered with during delivery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+ <!-- This imports the Popper.js library, which is used for positioning tooltips and popovers in Bootstrap. The 'integrity' attribute provides extra security by ensuring the file is not tampered with during delivery -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+<script>
+    function filter_set(type) {
+        window.location.href = "{% url 'Product_product_list' %}" + +type
+        console.log(+type)
+    }
+</script>
+</body>
+</html>
+
+
+
+
